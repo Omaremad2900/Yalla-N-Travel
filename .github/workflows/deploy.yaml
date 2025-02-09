@@ -1,0 +1,32 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Kubernetes Config
+      run: echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+
+    - name: Install Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    - name: Update Helm Image Tag
+      run: |
+        sed -i "s/tag: .*/tag: latest/" helm/values.yaml
+
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install mern-app ./helm
+
+    - name: Sync with ArgoCD
+      run: |
+        argocd app sync mern-app --grpc-web

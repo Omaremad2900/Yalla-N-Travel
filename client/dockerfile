@@ -1,0 +1,21 @@
+# Use Node.js image
+FROM node:18 as build
+WORKDIR /app
+
+# Copy dependencies and install
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy application files and build React app
+COPY . .
+RUN npm run build
+
+# Use Nginx to serve static files
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose frontend port
+EXPOSE 5176
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

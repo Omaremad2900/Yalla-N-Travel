@@ -1,0 +1,14 @@
+api:
+  image: your-dockerhub-username/mern-api
+  tag: latest
+  port: 3000
+
+client:
+  image: your-dockerhub-username/mern-client
+  tag: latest
+  port: 5176
+
+mongodb:
+  image: mongo
+  tag: latest
+  port: 27017

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-client
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mern-client
+  template:
+    metadata:
+      labels:
+        app: mern-client
+    spec:
+      containers:
+      - name: client
+        image: "{{ .Values.client.image }}:{{ .Values.client.tag }}"
+        ports:
+        - containerPort: 5176
