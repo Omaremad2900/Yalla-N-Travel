@@ -1,0 +1,19 @@
+/* styles.css */
+.header-bg {
+  background-color: #DCE1EE; 
+  height: 150px; 
+  display: flex; 
+  align-items: center; 
+  padding: 0 20px; /* Optional: Add horizontal padding */
+}
+
+.header-logo {
+  margin-right: 20px; /* Space between logo and nav items */
+  display: flex; /* Ensures logo content is aligned properly */
+  align-items: center; /* Center the logo vertically */
+}
+
+.header-nav {
+  display: flex; 
+  align-items: center; 
+}

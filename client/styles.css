@@ -1,0 +1,32 @@
+.sidenav {
+    width: 250px; /* Adjust width as needed */
+    background-color: #f8f9fa; /* Background color */
+    padding: 20px; /* Padding */
+    border-right: 1px solid #ddd; /* Right border */
+  }
+  
+  .sidenav-title {
+    font-size: 1.5rem; /* Title font size */
+    margin-bottom: 20px; /* Margin below title */
+  }
+  
+  .sidenav-links {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove padding */
+  }
+  
+  .sidenav-links li {
+    margin: 10px 0; /* Spacing between links */
+  }
+  
+  .sidenav-links a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Link color */
+    font-weight: 500; /* Font weight */
+  }
+  
+  .sidenav-links a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #0056b3; /* Darker link color on hover */
+  }
+  
