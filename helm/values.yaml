@@ -1,10 +1,10 @@
 api:
-  image: your-dockerhub-username/mern-api
+  image: omaremaddd/mern-api
   tag: latest
   port: 3000
 
 client:
-  image: your-dockerhub-username/mern-client
+  image: omaremaddd/mern-client
   tag: latest
   port: 5176
 
@@ -12,3 +12,14 @@ mongodb:
   image: mongo
   tag: latest
   port: 27017
+
+  serviceAccount:
+  create: false  
+
+autoscaling:
+  enabled: false  # Set to true if you want auto-scaling
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
+

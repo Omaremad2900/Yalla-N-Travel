@@ -158,16 +158,6 @@ const TourguideService = {
       throw error;
     }
   },
-  createTourGuide: async (tourGuideData) => {
-    try {
-
-      const response = await axiosInstance.post('/api/tourGuide/createTourGuide', tourGuideData);
-      return response;
-    } catch (error) {
-      console.error('Error creating Tour Guide:', error);
-      throw error;
-    }
-  },
   requestAccountDeletion: async (userId) => {
     try {
       const response = await axiosInstance.put(`/api/tourGuide/requestDeleteTourGuide`, { userId });

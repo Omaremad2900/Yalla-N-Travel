@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com/your-username/mern-app.git"
+    repoURL: "https://github.com/omaremad2900/Yalla-N-Travel.git"
     targetRevision: HEAD
     path: helm/
   destination:

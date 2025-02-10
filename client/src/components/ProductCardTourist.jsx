@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import ProductService from "../services/ProductService";
 import { FaStar } from "react-icons/fa";
 import {FaHeart } from "react-icons/fa"; // Import the heart icon
-import TouristService from "../../../api/services/tourist.service";
 import touristService from "../services/touristService";
 
 export default function ProductCard({ product, idx, loggedInUser, currency }) {

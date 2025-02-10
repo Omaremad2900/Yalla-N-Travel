@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import TouristSideNav from '../components/touristSidenav';
+import TouristSideNav from '../components/TouristSideNav';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import { FaEye } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
