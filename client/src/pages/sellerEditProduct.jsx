@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FileUpload from "../components/uploadFile"; // Import the FileUpload component
 
 const SellerEditProduct = ({ SellerService }) => {
   const { productId } = useParams();

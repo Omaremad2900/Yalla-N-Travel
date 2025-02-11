@@ -7,15 +7,17 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy application files and build React app
-COPY . .
-RUN npm run build
+COPY . .  
+RUN npm run build || (echo "React build failed!" && exit 1)
+
+# Debugging step: List output directory
+RUN ls -la /app/dist 
 
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html  
+WORKDIR /usr/share/nginx/html 
+COPY --from=build /app/dist /usr/share/nginx/html 
 
 # Expose the correct port
-EXPOSE 80  
-
-# Start Nginx
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
