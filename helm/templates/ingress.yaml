@@ -4,6 +4,10 @@ metadata:
   name: {{ .Release.Name }}-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: "/"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
+    nginx.ingress.kubernetes.io/enable-websockets: "true"
 spec:
   ingressClassName: nginx 
   rules:
@@ -28,3 +32,11 @@ spec:
             name: mern-api-service
             port:
               number: {{ .Values.service.api.port }}
+
+      - path: /socket.io/
+        pathType: Prefix
+        backend:
+          service:
+            name: mern-api-service
+            port:
+              number: 4000

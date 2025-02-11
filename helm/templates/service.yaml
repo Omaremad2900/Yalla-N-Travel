@@ -6,9 +6,15 @@ spec:
   selector:
     app: mern-api
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 3000
       targetPort: 3000
+    - name: websocket
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
+
 ---
 apiVersion: v1
 kind: Service

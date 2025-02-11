@@ -6,7 +6,7 @@ api:
 client:
   image: omaremaddd/mern-client
   tag: latest
-  port: 5176
+  port: 80
 
 mongodb:
   image: mongo

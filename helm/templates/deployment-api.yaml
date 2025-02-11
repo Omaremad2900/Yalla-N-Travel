@@ -16,8 +16,13 @@ spec:
       - name: api
         image: "{{ .Values.api.image }}:{{ .Values.api.tag }}"
         ports:
-        - containerPort: 3000
+        - containerPort: 3000  
+        - containerPort: 4000  
         envFrom:
         - secretRef:
             name: api-secrets
-
+        env:
+        - name: PORT
+          value: "3000"
+        - name: SOCKET_PORT
+          value: "4000"

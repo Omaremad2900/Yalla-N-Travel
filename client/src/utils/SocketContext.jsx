@@ -10,7 +10,10 @@ const SocketProvider = ({ children }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     console.log('Initializing socket connection...');
-    const socketInstance = io("http://localhost:4000"); // Your server URL
+    const socket = io("http://api.yalla.local", {
+  path: "/socket.io/",
+  transports: ["websocket", "polling"],
+});
     setSocket(socketInstance);
 
     if (currentUser?._id) {

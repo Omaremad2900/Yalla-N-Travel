@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5176,
     proxy: {
       "/api": {
-        target: "http://localhost:3000",
+        target: "http://api.yalla.local/api",
         secure: false,
       },
     },

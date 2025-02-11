@@ -5,7 +5,7 @@ import { updateToken,signOutUserSuccess} from '../src/redux/user/userSlice.js'; 
 
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://api.yalla.local/api',
   timeout: 10000,
 });
 
@@ -20,7 +20,7 @@ const newAccessToken = async () => {
   const { user: { currentUser } } = store.getState();
 
   try {
-    const response = await axios.post('http://localhost:3000/api/auth/refresh', {
+    const response = await axios.post('http://api.yalla.local/api/api/auth/refresh', {
       refreshToken: currentUser.refreshToken,
     });
 
