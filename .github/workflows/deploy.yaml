@@ -42,4 +42,8 @@ jobs:
 
     - name: Sync with ArgoCD
       run: |
-        argocd app sync yalla-n-travel --grpc-web
+        argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD --grpc-web
+        argocd app sync yalla-n-travel
+      env:
+        ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+        ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
