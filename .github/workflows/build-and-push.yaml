@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build and Push Docker Images to AWS ECR
 
 on:
   push:
@@ -13,15 +13,25 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: me-south-1  
+
+    - name: Log in to Amazon ECR
+      run: |
+        aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
 
     - name: Build and Push API Image
       run: |
-        docker build -t omaremaddd/mern-api:latest -f api/Dockerfile api/
-        docker push omaremaddd/mern-api:latest
+        REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
+        docker build -t $REPO_URI:mern-api-latest -f api/Dockerfile api/
+        docker push $REPO_URI:mern-api-latest
 
     - name: Build and Push Client Image
       run: |
-        docker build -t omaremaddd/mern-client:latest -f client/Dockerfile client/
-        docker push omaremaddd/mern-client:latest
+        REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
+        docker build -t $REPO_URI:mern-client-latest -f client/Dockerfile client/
+        docker push $REPO_URI:mern-client-latest

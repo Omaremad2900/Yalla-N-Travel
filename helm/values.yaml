@@ -1,11 +1,11 @@
 api:
-  image: omaremaddd/mern-api
-  tag: latest
+  image: 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
+  tag: mern-api-latest
   port: 3000
 
 client:
-  image: omaremaddd/mern-client
-  tag: latest
+  image: 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
+  tag: mern-client-latest
   port: 80
 
 mongodb:
@@ -35,7 +35,11 @@ ingress:
   apiHost: api.yalla.local    # Backend domain
   clientHost: yalla.local      # Frontend domain
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: "/"
-  tls: false  # Change to true if using HTTPS
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
+    alb.ingress.kubernetes.io/healthcheck-path: "/"
+  tls: false  # Set to true if you plan to use HTTPS (with AWS ACM)
 
 

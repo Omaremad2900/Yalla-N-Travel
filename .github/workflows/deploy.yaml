@@ -13,15 +13,16 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set up Kubernetes Config
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: me-south-1
+
+    - name: Set up Kubernetes Config for AWS EKS
       run: |
-        echo "Creating Kubernetes config directory..."
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
-        cat $HOME/.kube/config  # Debugging: Check if the file exists
-        chmod 600 $HOME/.kube/config  # Set correct permissions
-        export KUBECONFIG=$HOME/.kube/config  # Ensure K8s CLI can find it
-      shell: bash
+        aws eks update-kubeconfig --name yalla --region me-south-1
 
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -32,13 +33,20 @@ jobs:
         chmod +x argocd-linux-amd64
         sudo mv argocd-linux-amd64 /usr/local/bin/argocd
 
+    - name: Authenticate with AWS ECR
+      run: |
+        aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 615299727797.dkr.ecr.me-south-1.amazonaws.com
+
     - name: Update Helm Image Tag
       run: |
-        sed -i "s/tag: .*/tag: latest/" helm/values.yaml
+        sed -i "s|repository: .*|repository: 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel|" helm/values.yaml
+        sed -i "s|tag: .*|tag: mern-api-latest|" helm/values.yaml
+        sed -i "s|tag: .*|tag: mern-client-latest|" helm/values.yaml
+      shell: bash
 
     - name: Deploy with Helm
       run: |
-        helm upgrade --install yalla-n-travel ./helm
+        helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
 
     - name: Sync with ArgoCD
       run: |
