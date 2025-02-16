@@ -24,10 +24,10 @@ autoscaling:
 
 service:
   api:
-    type: ClusterIP
+    type: LoadBalancer
     port: 3000
   client:
-    type: ClusterIP
+    type: LoadBalancer
     port: 80
 
 ingress:
