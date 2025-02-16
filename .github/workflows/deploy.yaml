@@ -1,9 +1,10 @@
 name: Deploy to Kubernetes
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Build and Push Docker Images to AWS ECR"]
+    types:
+      - completed
 
 jobs:
   deploy:
