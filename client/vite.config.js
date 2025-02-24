@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import { API_URL } from "./contants";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,7 +8,7 @@ export default defineConfig({
     port: 5176,
     proxy: {
       "/api": {
-        target: "http://api.yalla.local/api",
+        target: API_URL,
         secure: false,
       },
     },

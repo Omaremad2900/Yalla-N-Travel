@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
+import { SOCKET_URL } from "../../contants";
 
 const SocketContext = createContext();
 
@@ -10,10 +11,7 @@ const SocketProvider = ({ children }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     console.log('Initializing socket connection...');
-    const socket = io("http://api.yalla.local", {
-  path: "/socket.io/",
-  transports: ["websocket", "polling"],
-});
+    const socketInstance = io(SOCKET_URL)
     setSocket(socketInstance);
 
     if (currentUser?._id) {

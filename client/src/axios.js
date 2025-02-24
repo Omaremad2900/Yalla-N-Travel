@@ -2,10 +2,10 @@ import axios from 'axios';
 import { store } from '../src/redux/store.js';
 import { redirectToLogin } from './utils/redirect.jsx';
 import { updateToken,signOutUserSuccess} from '../src/redux/user/userSlice.js'; // Action to update the token in Redux
-
+import { API_URL } from '../contants.js';
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://api.yalla.local/api',
+  baseURL: API_URL,
   timeout: 10000,
 });
 
@@ -20,7 +20,7 @@ const newAccessToken = async () => {
   const { user: { currentUser } } = store.getState();
 
   try {
-    const response = await axios.post('http://api.yalla.local/api/api/auth/refresh', {
+    const response = await axios.post(`${API_URL}/api/auth/refresh`, {
       refreshToken: currentUser.refreshToken,
     });
 
