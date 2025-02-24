@@ -10,11 +10,6 @@ client:
   pullPolicy: Always
   port: 80
 
-mongodb:
-  image: mongo
-  tag: latest
-  port: 27017
-
 serviceAccount:
   create: false  # Set to true if you want Helm to create a service account
 

@@ -42,7 +42,7 @@ spec:
             port:
               number: {{ .Values.service.api.port }}
 
-      - path: /socket.io/
+      - path: /socket.io
         pathType: Prefix
         backend:
           service:
