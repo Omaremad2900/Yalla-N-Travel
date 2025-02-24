@@ -7,9 +7,9 @@ let io;
  * @param {Object} httpServer - The HTTP server instance
  */
 export const initSocketService = (httpServer) => {
-  io = new Server(4000, {
+  io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5176", // Replace with your frontend's URL
+      origin: "*", // Replace with your frontend's URL
       methods: ["GET", "POST"],
     },
   });

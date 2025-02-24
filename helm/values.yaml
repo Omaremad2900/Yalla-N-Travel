@@ -2,11 +2,13 @@ api:
   image: omaremaddd/mern-api
   tag: latest
   port: 3000
+  imagePullPolicy: Always
 
 client:
   image: omaremaddd/mern-client
   tag: latest
   port: 80
+  imagePullPolicy: Always
 
 mongodb:
   image: mongo
@@ -24,10 +26,10 @@ autoscaling:
 
 service:
   api:
-    type: ClusterIP
+    type: NodePort
     port: 3000
   client:
-    type: ClusterIP
+    type: NodePort
     port: 80
 
 ingress:

@@ -52,7 +52,7 @@ app.use(express.json()); // To parse incoming JSON request bodies
 // CORS
 app.use(
   cors({
-    origin: "http://yalla.local", // Allow only this origin
+    origin: "http://192.168.49.2:30082", // Allow only this origin
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allow specific methods
     credentials: true, // Allow credentials like cookies
   })

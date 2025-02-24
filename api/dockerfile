@@ -13,8 +13,9 @@ RUN npm install --only=production
 # Copy the rest of the application files
 COPY . .
 
-# Expose API port
-EXPOSE 3000
+# Expose API port and WebSocket port
+EXPOSE 3000 4000 
+
 
 # Use environment variables dynamically
 CMD ["node", "index.js"]

@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: mern-api-service
 spec:
+  type: NodePort  # ✅ Changed to NodePort
   selector:
     app: mern-api
   ports:
@@ -10,10 +11,13 @@ spec:
       protocol: TCP
       port: 3000
       targetPort: 3000
+      nodePort: 30080  # ✅ Exposes on NodePort 30080
     - name: websocket
       protocol: TCP
       port: 4000
       targetPort: 4000
+      nodePort: 30081  # ✅ Exposes WebSockets on NodePort 30081
+
 
 ---
 apiVersion: v1
@@ -21,10 +25,11 @@ kind: Service
 metadata:
   name: mern-client-service
 spec:
+  type: NodePort  # ✅ Changed to NodePort
   selector:
     app: mern-client
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: ClusterIP
+      nodePort: 30082  # ✅ Exposes Client on NodePort 30082

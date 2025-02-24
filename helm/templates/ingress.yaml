@@ -32,11 +32,3 @@ spec:
             name: mern-api-service
             port:
               number: {{ .Values.service.api.port }}
-
-      - path: /socket.io/
-        pathType: Prefix
-        backend:
-          service:
-            name: mern-api-service
-            port:
-              number: 4000

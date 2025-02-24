@@ -5,19 +5,7 @@ services:
     build: ./api
     ports:
       - "3000:3000"
+      - "4000:4000"
     env_file:
       - ./api/.env
     restart: always
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo
-    container_name: mongo-db
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-volumes:
-  mongo-data:
