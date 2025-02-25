@@ -27,16 +27,4 @@ service:
     type: LoadBalancer
     port: 80
 
-ingress:
-  enabled: true
-  apiHost: api.yalla.local    # Backend domain
-  clientHost: yalla.local      # Frontend domain
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
-    alb.ingress.kubernetes.io/healthcheck-path: "/"
-  tls: false  # Set to true if you plan to use HTTPS (with AWS ACM)
-
 
