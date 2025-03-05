@@ -14,17 +14,3 @@ data:
     g, admin, system:masters
   policy.default: role:readonly
   scopes: '[groups, email]'
-
-kind: ConfigMap
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-rbac-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-rbac-cm","namespace":"argocd"}}
-  creationTimestamp: "2025-02-14T00:08:54Z"
-  labels:
-    app.kubernetes.io/name: argocd-rbac-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-rbac-cm
-  namespace: argocd
-  resourceVersion: "489188"
-  uid: ff0fc6fb-34a8-438d-8244-e57dff62a0b0
