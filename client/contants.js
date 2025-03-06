@@ -1,3 +1,3 @@
-//add my backend host and socket host here
-export const API_URL = "http://localhost:3000";
-export const SOCKET_URL = "http://localhost:4000";
+// Define backend service URLs
+const API_URL = 'http://mern-api-service:3000';
+const SOCKET_URL = 'http://mern-api-service:4000';
