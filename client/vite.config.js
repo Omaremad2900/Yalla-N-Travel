@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5176,
     proxy: {
       "/api": {
-        target: "http://192.168.49.2:30080",
+        target: "http://mern-api-service:3000",
         secure: false,
       },
     },

@@ -5,7 +5,7 @@ import { updateToken,signOutUserSuccess} from '../src/redux/user/userSlice.js'; 
 
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://192.168.49.2:30080',
+  baseURL: 'http://mern-api-service:3000',
   timeout: 10000,
 });
 
@@ -20,7 +20,7 @@ const newAccessToken = async () => {
   const { user: { currentUser } } = store.getState();
 
   try {
-    const response = await axios.post('http://192.168.49.2:30080/api/auth/refresh', {
+    const response = await axios.post('http://mern-api-service:3000/api/auth/refresh', {
       refreshToken: currentUser.refreshToken,
     });
 
