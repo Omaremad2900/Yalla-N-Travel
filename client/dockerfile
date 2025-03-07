@@ -16,7 +16,12 @@ RUN ls -la /app/dist
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html 
+
+# Copy built React app to Nginx serving directory
 COPY --from=build /app/dist /usr/share/nginx/html 
+
+# ✅ Copy the Nginx configuration file correctly
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose the correct port
 EXPOSE 80
