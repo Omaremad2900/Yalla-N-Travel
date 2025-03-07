@@ -18,10 +18,10 @@ jobs:
 
     - name: Build and Push API Image
       run: |
-        docker build -t omaremaddd/mern-api:latest -f api/Dockerfile api/
+        docker build -t omaremaddd/mern-api:latest -f api/Dockerfile api/ --no-cache 
         docker push omaremaddd/mern-api:latest
 
     - name: Build and Push Client Image
       run: |
-        docker build -t omaremaddd/mern-client:latest -f client/Dockerfile client/
+        docker build -t omaremaddd/mern-client:latest -f client/Dockerfile client/ --no-cache 
         docker push omaremaddd/mern-client:latest

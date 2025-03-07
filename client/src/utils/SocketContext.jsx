@@ -10,7 +10,7 @@ const SocketProvider = ({ children }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     console.log('Initializing socket connection...');
-    const socketInstance = io("http://mern-api-service:4000");
+    const socketInstance = io("http://localhost:8080/socket");
     setSocket(socketInstance);
 
     if (currentUser?._id) {
