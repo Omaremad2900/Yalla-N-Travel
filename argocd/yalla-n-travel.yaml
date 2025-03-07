@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/omaremad2900/Yalla-N-Travel.git"
-    targetRevision: HEAD
+    targetRevision: Minikube
     path: helm/
   destination:
     server: https://kubernetes.default.svc
