@@ -40,6 +40,12 @@ jobs:
       run: |
         helm upgrade --install yalla-n-travel ./helm
 
+    - name: force restart
+      run: |
+        kubectl rollout restart deployment yalla-n-travel-api
+        kubectl rollout restart deployment yalla-n-travel-client
+
     - name: Sync with ArgoCD
       run: |
+        argocd login --username admin --password Mx0hjjGa9lFvVtO8
         argocd app sync yalla-n-travel --grpc-web
