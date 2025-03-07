@@ -1,3 +1,3 @@
 // Define backend service URLs
-const API_URL = 'http://mern-api-service:3000';
-const SOCKET_URL = 'http://localhost:8080/socket';
+const API_URL = '/api';
+const SOCKET_URL = '/socket';

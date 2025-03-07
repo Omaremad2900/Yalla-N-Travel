@@ -1,13 +1,25 @@
+
 import axios from 'axios';
 import { store } from '../src/redux/store.js';
 import { redirectToLogin } from './utils/redirect.jsx';
 import { updateToken,signOutUserSuccess} from '../src/redux/user/userSlice.js'; // Action to update the token in Redux
-import { API_URL } from '../contants.js';
+
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: '/api', // Use the Nginx proxy path
   timeout: 10000,
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Ensure no duplicate "/api/api/"
+    if (config.url.startsWith('/api/')) {
+      config.url = config.url.replace(/^\/api\//, '/'); // Removes only the first `/api/`
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 const clearSessionAndRedirect = () => {
   store.dispatch(updateToken(null)); // Clear the token in the Redux store
@@ -20,7 +32,7 @@ const newAccessToken = async () => {
   const { user: { currentUser } } = store.getState();
 
   try {
-    const response = await axios.post(`${API_URL}/api/auth/refresh`, {
+    const response = await axios.post('/api/auth/refresh', {
       refreshToken: currentUser.refreshToken,
     });
 
@@ -62,7 +74,7 @@ axiosInstance.interceptors.response.use(
         const newToken = await newAccessToken();
         if (newToken) {
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return axiosInstance(originalRequest); // Retry the original request with new token
+          return axiosInstance(originalRequest);
         }
       }
 
