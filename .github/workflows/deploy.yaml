@@ -1,9 +1,10 @@
 name: Deploy to Kubernetes
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Build and Push Docker Images to AWS ECR"]
+    types:
+      - completed
 
 jobs:
   deploy:
@@ -36,6 +37,12 @@ jobs:
       run: |
         sed -i "s/tag: .*/tag: latest/" helm/values.yaml
 
+    - name: Load Image in minikube
+      run: |
+        minikube image load omaremaddd/mern-api:latest                           
+        minikube image load omaremaddd/mern-client:latest
+
+
     - name: Deploy with Helm
       run: |
         helm upgrade --install yalla-n-travel ./helm
@@ -45,7 +52,15 @@ jobs:
         kubectl rollout restart deployment yalla-n-travel-api
         kubectl rollout restart deployment yalla-n-travel-client
 
+    - name: Port Forward frontend service
+      run: |
+        kubectl port-forward svc/yalla-n-travel-client-service 8080:80
+
     - name: Sync with ArgoCD
       run: |
         argocd login --username admin --password Mx0hjjGa9lFvVtO8
         argocd app sync yalla-n-travel --grpc-web
+
+    - name: Port forward ArgoCD
+      run: |
+        kubectl port-forward svc/argocd-server -n argocd 9090:443
