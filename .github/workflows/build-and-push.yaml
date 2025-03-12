@@ -31,15 +31,15 @@ jobs:
     - name: Build and Push API Image
       run: |
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-        docker build -t $REPO_URI:$IMAGE_TAG -f api/Dockerfile api/
-        docker push $REPO_URI:$IMAGE_TAG
+        docker build -t $REPO_URI:api-$IMAGE_TAG -f api/Dockerfile api/
+        docker push $REPO_URI:api-$IMAGE_TAG
 
     - name: Build and Push Client Image
       run: |
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-        docker build -t $REPO_URI:$IMAGE_TAG -f client/Dockerfile client/
-        docker push $REPO_URI:$IMAGE_TAG
-
+        docker build -t $REPO_URI:client-$IMAGE_TAG -f client/Dockerfile client/
+        docker push $REPO_URI:client-$IMAGE_TAG
+        
     - name: Save Image Tag for Deployment
       run: echo "IMAGE_TAG=$IMAGE_TAG" > image_tag.txt
 

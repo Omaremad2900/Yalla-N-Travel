@@ -48,8 +48,8 @@ jobs:
 
     - name: Update Helm Image Tag
       run: |
-        yq eval ".api.tag = \"$IMAGE_TAG\"" -i helm/values.yaml
-        yq eval ".client.tag = \"$IMAGE_TAG\"" -i helm/values.yaml
+        yq eval ".api.tag = \"api-$IMAGE_TAG\"" -i helm/values.yaml
+        yq eval ".client.tag = \"client-$IMAGE_TAG\"" -i helm/values.yaml
 
     - name: Commit & Push Changes
       run: |
