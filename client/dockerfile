@@ -1,5 +1,5 @@
 # Stage 1: Build React App
-FROM node:18 AS build
+FROM node:18-alpine AS build
 WORKDIR /app
 
 # Copy dependencies and install
@@ -10,8 +10,9 @@ RUN npm install
 COPY . .  
 RUN npm run build || (echo "React build failed!" && exit 1)
 
-# Debugging step: List output directory
-RUN ls -la /app/dist 
+# Remove node_modules to reduce image size
+RUN rm -rf node_modules
+
 
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
