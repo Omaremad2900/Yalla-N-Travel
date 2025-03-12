@@ -53,11 +53,6 @@ jobs:
       run: |
         helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
 
-    - name: Force Kubernetes to Pull New Image
-      run: |
-        kubectl rollout restart deployment mern-api
-        kubectl rollout restart deployment mern-client
-
     - name: Sync with ArgoCD
       run: |
         argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD --grpc-web --insecure
@@ -65,3 +60,8 @@ jobs:
       env:
         ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
         ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
+
+    - name: Force Kubernetes to Pull New Image
+      run: |
+        kubectl rollout restart deployment mern-api
+        kubectl rollout restart deployment mern-client
