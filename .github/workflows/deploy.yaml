@@ -43,15 +43,15 @@ jobs:
       run: |
         aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 615299727797.dkr.ecr.me-south-1.amazonaws.com
 
-    - name: Update Helm Image Tag
-      run: |
-        yq eval '.api.image = "615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel"' -i helm/values.yaml
-        yq eval '.api.tag = "mern-api-latest"' -i helm/values.yaml
-        yq eval '.client.tag = "mern-client-latest"' -i helm/values.yaml
+    #- name: Update Helm Image Tag
+     # run: |
+      #  yq eval '.api.image = "615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel"' -i helm/values.yaml
+      #  yq eval '.api.tag = "mern-api-latest"' -i helm/values.yaml
+       # yq eval '.client.tag = "mern-client-latest"' -i helm/values.yaml
 
-    - name: Deploy with Helm
-      run: |
-        helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
+    #- name: Deploy with Helm
+     # run: |
+       # helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
 
     - name: Sync with ArgoCD
       run: |

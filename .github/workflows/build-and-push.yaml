@@ -35,3 +35,22 @@ jobs:
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
         docker build -t $REPO_URI:mern-client-latest -f client/Dockerfile client/
         docker push $REPO_URI:mern-client-latest
+
+    - name: Cleanup Old ECR Images
+      run: |
+        REPO_NAME=yalla-n-travel
+        AWS_REGION=me-south-1
+        IMAGE_TAG_TO_KEEP="mern-api-latest mern-client-latest"
+
+        # List image digests excluding the latest tag
+        IMAGE_IDS=$(aws ecr list-images --repository-name $REPO_NAME --region $AWS_REGION \
+          --query 'imageIds[?!(contains(@, `'"$IMAGE_TAG_TO_KEEP"'`))]' --output json)
+
+        # Check if there are any images to delete
+        if [[ "$IMAGE_IDS" != "[]" ]]; then
+          echo "Deleting old images..."
+          aws ecr batch-delete-image --repository-name $REPO_NAME --region $AWS_REGION \
+            --image-ids "$IMAGE_IDS"
+        else
+          echo "No old images found to delete."
+        fi
