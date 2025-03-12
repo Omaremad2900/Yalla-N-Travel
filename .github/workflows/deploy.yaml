@@ -59,9 +59,9 @@ jobs:
         git commit -m "Update image tag to $IMAGE_TAG"
         git push    
 
-    - name: Deploy with Helm
-      run: |
-        helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
+    #- name: Deploy with Helm
+      #run: |
+      #  helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
 
     - name: Sync with ArgoCD
       run: |
