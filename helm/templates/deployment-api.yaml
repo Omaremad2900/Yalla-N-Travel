@@ -19,40 +19,13 @@ spec:
         ports:
         - containerPort: 3000  
         - containerPort: 4000  
+        envFrom:
+        - secretRef:
+            name: api-secrets
         env:
         - name: PORT
           value: "3000"
         - name: SOCKET_PORT
           value: "4000"
-        - name: MONGO
-          value: "{{ .Values.api.secrets.MONGO }}"
-        - name: MONGO_URI
-          value: "{{ .Values.api.secrets.MONGO_URI }}"
-        - name: JWT_SECRET
-          value: "{{ .Values.api.secrets.JWT_SECRET }}"
-        - name: EMAIL_HOST
-          value: "{{ .Values.api.secrets.EMAIL_HOST }}"
-        - name: EMAIL_PORT
-          value: "{{ .Values.api.secrets.EMAIL_PORT }}"
-        - name: EMAIL_USER
-          value: "{{ .Values.api.secrets.EMAIL_USER }}"
-        - name: APP_PASSWORD
-          value: "{{ .Values.api.secrets.APP_PASSWORD }}"
-        - name: MAIL_USER
-          value: "{{ .Values.api.secrets.MAIL_USER }}"
-        - name: STRIPE_SECRET_KEY
-          value: "{{ .Values.api.secrets.STRIPE_SECRET_KEY }}"
-        - name: STRIPE_WEBHOOK_SECRET
-          value: "{{ .Values.api.secrets.STRIPE_WEBHOOK_SECRET }}"
-        - name: AMADEUS_CLIENT_ID
-          value: "{{ .Values.api.secrets.AMADEUS_CLIENT_ID }}"
-        - name: AMADEUS_CLIENT_SECRET
-          value: "{{ .Values.api.secrets.AMADEUS_CLIENT_SECRET }}"
-        - name: OPENAI_API_KEY
-          value: "{{ .Values.api.secrets.OPENAI_API_KEY }}"
-        - name: REFRESH_SECRET_KEY
-          value: "{{ .Values.api.secrets.REFRESH_SECRET_KEY }}"
-        - name: BASE_URL
-          value: "{{ .Values.api.secrets.BASE_URL }}"
         
         

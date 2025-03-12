@@ -1,0 +1,38 @@
+api:
+  image: omaremaddd/mern-api
+  tag: latest
+  pullPolicy: Always
+  port: 3000
+client:
+  image: omaremaddd/mern-client
+  tag: latest
+  pullPolicy: Always
+  port: 80
+
+serviceAccount:
+  create: false  # Set to true if you want Helm to create a service account
+
+autoscaling:
+  enabled: false  # Set to true if you want auto-scaling
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 75
+
+service:
+  type: "ClusterIP"  # Ensure this is explicitly defined as a string
+  port : 80
+  api:
+    type: "ClusterIP"
+    port: 3000
+  client:
+    type: "NodePort"
+    port: 80
+
+
+ingress:
+  enabled: false  # Set to true if you want ingress enabled
+
+
+  
+
