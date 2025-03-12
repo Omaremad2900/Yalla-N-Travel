@@ -14,6 +14,14 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Download Image Tag Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: image-tag
+
+    - name: Load Image Tag
+      run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> $GITHUB_ENV
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -22,8 +30,7 @@ jobs:
         aws-region: me-south-1
 
     - name: Set up Kubernetes Config for AWS EKS
-      run: |
-        aws eks update-kubeconfig --name yalla --region me-south-1
+      run: aws eks update-kubeconfig --name yalla --region me-south-1
 
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -39,19 +46,22 @@ jobs:
         sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
         sudo chmod +x /usr/local/bin/yq
 
-    - name: Authenticate with AWS ECR
+    - name: Update Helm Image Tag
       run: |
-        aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 615299727797.dkr.ecr.me-south-1.amazonaws.com
+        yq eval ".api.tag = \"$IMAGE_TAG\"" -i helm/values.yaml
+        yq eval ".client.tag = \"$IMAGE_TAG\"" -i helm/values.yaml
 
-    #- name: Update Helm Image Tag
-     # run: |
-      #  yq eval '.api.image = "615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel"' -i helm/values.yaml
-      #  yq eval '.api.tag = "mern-api-latest"' -i helm/values.yaml
-       # yq eval '.client.tag = "mern-client-latest"' -i helm/values.yaml
+    - name: Commit & Push Changes
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add helm/values.yaml
+        git commit -m "Update image tag to $IMAGE_TAG"
+        git push    
 
-    #- name: Deploy with Helm
-     # run: |
-       # helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
 
     - name: Sync with ArgoCD
       run: |

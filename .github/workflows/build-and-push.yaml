@@ -20,6 +20,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: me-south-1  
 
+    - name: Generate Image Tag
+      id: get-tag
+      run: echo "IMAGE_TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
     - name: Log in to Amazon ECR
       run: |
         aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
@@ -27,30 +31,20 @@ jobs:
     - name: Build and Push API Image
       run: |
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-        docker build -t $REPO_URI:mern-api-latest -f api/Dockerfile api/
-        docker push $REPO_URI:mern-api-latest
+        docker build -t $REPO_URI:$IMAGE_TAG -f api/Dockerfile api/
+        docker push $REPO_URI:$IMAGE_TAG
 
     - name: Build and Push Client Image
       run: |
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-        docker build -t $REPO_URI:mern-client-latest -f client/Dockerfile client/
-        docker push $REPO_URI:mern-client-latest
+        docker build -t $REPO_URI:$IMAGE_TAG -f client/Dockerfile client/
+        docker push $REPO_URI:$IMAGE_TAG
 
-    - name: Cleanup Old ECR Images
-      run: |
-        REPO_NAME=yalla-n-travel
-        AWS_REGION=me-south-1
-        IMAGE_TAG_TO_KEEP="mern-api-latest mern-client-latest"
+    - name: Save Image Tag for Deployment
+      run: echo "IMAGE_TAG=$IMAGE_TAG" > image_tag.txt
 
-        # List image digests excluding the latest tag
-        IMAGE_IDS=$(aws ecr list-images --repository-name $REPO_NAME --region $AWS_REGION \
-          --query 'imageIds[?!(contains(@, `'"$IMAGE_TAG_TO_KEEP"'`))]' --output json)
-
-        # Check if there are any images to delete
-        if [[ "$IMAGE_IDS" != "[]" ]]; then
-          echo "Deleting old images..."
-          aws ecr batch-delete-image --repository-name $REPO_NAME --region $AWS_REGION \
-            --image-ids "$IMAGE_IDS"
-        else
-          echo "No old images found to delete."
-        fi
+    - name: Upload Image Tag Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: image-tag
+        path: image_tag.txt
