@@ -14,24 +14,14 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Wait for Artifacts
-      run: sleep 30  # Wait for 30 seconds before trying to download
-
-    - name: List Available Artifacts (Debug)
-      run: ls -R ${{ github.workspace }}
-
-    - name: Download Image Tag Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: image-tag
-
-    - name: Load Image Tag
-      run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> $GITHUB_ENV
+    - name: Retrieve Image Tag
+      run: echo "IMAGE_TAG=${{ needs.build.outputs.image_tag }}" >> $GITHUB_ENV
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -69,18 +59,6 @@ jobs:
         git add helm/values.yaml
         git commit -m "Update image tag to $IMAGE_TAG [skip ci]" || echo "No changes to commit"
         git push    
-
-    #- name: Deploy with Helm
-      #run: |
-      #  helm upgrade --install yalla-n-travel ./helm --namespace default --create-namespace
-
-    #- name: Sync with ArgoCD
-      #run: |
-        #argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD --grpc-web --insecure
-        #argocd app sync yalla-n-travel
-      #env:
-        #ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
-        #ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
 
     - name: Force Kubernetes to Pull New Image
       run: |

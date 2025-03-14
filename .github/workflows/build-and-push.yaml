@@ -51,13 +51,3 @@ jobs:
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
         docker build -t $REPO_URI:client-$IMAGE_TAG -f client/Dockerfile client/
         docker push $REPO_URI:client-$IMAGE_TAG
-
-    - name: Save Image Tag for Deployment
-      run: echo "IMAGE_TAG=$IMAGE_TAG" > image_tag.txt
-
-    - name: Upload Image Tag Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: image-tag
-        path: image_tag.txt
-        retention-days: 7  # Store the artifact for 7 days
