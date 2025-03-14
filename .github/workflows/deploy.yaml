@@ -57,7 +57,7 @@ jobs:
       run: |
         git config --global user.email "github-actions@github.com"
         git config --global user.name "GitHub Actions"
-        git remote set-url origin https://x-access-token:${GH_PAT}@github.com/Omaremad2900/Yalla-N-Travel.git
+        git remote set-url origin https://${GH_PAT}@github.com/Omaremad2900/Yalla-N-Travel.git
         git add helm/values.yaml
         git commit -m "Update image tag to $IMAGE_TAG [skip ci]" || echo "No changes to commit"
         git push origin main
