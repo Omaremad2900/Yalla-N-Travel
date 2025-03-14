@@ -1,3 +1,3 @@
 // Define backend service URLs
-const API_URL = '/api';
-const SOCKET_URL = '/socket';
+export const API_URL = '/api';
+export const SOCKET_URL = '/socket';
