@@ -6,6 +6,11 @@ on:
     types:
       - completed
 
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,6 +18,12 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
+
+    - name: Wait for Artifacts
+      run: sleep 30  # Wait for 30 seconds before trying to download
+
+    - name: List Available Artifacts (Debug)
+      run: ls -R ${{ github.workspace }}
 
     - name: Download Image Tag Artifact
       uses: actions/download-artifact@v4

@@ -5,14 +5,22 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"  # Ignore commits with [skip ci]
     runs-on: ubuntu-latest
 
+    outputs:
+      image_tag: ${{ steps.get-tag.outputs.IMAGE_TAG }}
+
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -23,7 +31,10 @@ jobs:
 
     - name: Generate Image Tag
       id: get-tag
-      run: echo "IMAGE_TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+      run: |
+        IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Log in to Amazon ECR
       run: |
@@ -40,7 +51,7 @@ jobs:
         REPO_URI=615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
         docker build -t $REPO_URI:client-$IMAGE_TAG -f client/Dockerfile client/
         docker push $REPO_URI:client-$IMAGE_TAG
-        
+
     - name: Save Image Tag for Deployment
       run: echo "IMAGE_TAG=$IMAGE_TAG" > image_tag.txt
 
@@ -49,3 +60,4 @@ jobs:
       with:
         name: image-tag
         path: image_tag.txt
+        retention-days: 7  # Store the artifact for 7 days
