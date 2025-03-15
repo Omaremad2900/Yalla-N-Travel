@@ -128,7 +128,7 @@ const TouristRead = ({ touristService }) => {
   };
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="flex bg-white min-h-screen">
       {/* Sidebar */}
       <SideNav />
 
