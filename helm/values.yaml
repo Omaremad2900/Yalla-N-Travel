@@ -1,11 +1,11 @@
 api:
   image: 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-  tag: api-20250314143445
+  tag: api-20250315145915
   pullPolicy: Always
   port: 3000
 client:
   image: 615299727797.dkr.ecr.me-south-1.amazonaws.com/yalla-n-travel
-  tag: client-20250314143445
+  tag: client-20250315145915
   pullPolicy: Always
   port: 80
 serviceAccount:
